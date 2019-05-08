@@ -26,11 +26,15 @@ namespace VcwBackend.Migrations
 
                     b.Property<Guid?>("CategoryId");
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
                     b.Property<string>("Description");
 
                     b.Property<string>("FileName");
 
-                    b.Property<Guid?>("TableId");
+                    b.Property<DateTime>("ModifDate");
 
                     b.Property<string>("Type");
 
@@ -58,15 +62,29 @@ namespace VcwBackend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("ChallengeState");
+
+                    b.Property<string>("ChallengeType");
+
+                    b.Property<string>("CompanyName");
+
+                    b.Property<DateTime>("CreateDate");
+
                     b.Property<DateTime?>("Deadline");
+
+                    b.Property<bool>("Deleted");
 
                     b.Property<string>("Description");
 
                     b.Property<decimal?>("FirstBounce");
 
+                    b.Property<DateTime>("ModifDate");
+
                     b.Property<decimal?>("SecondBounce");
 
                     b.Property<decimal?>("ThirdBounce");
+
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
@@ -78,9 +96,13 @@ namespace VcwBackend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
                     b.Property<string>("Description");
 
-                    b.Property<Guid?>("TableId");
+                    b.Property<DateTime>("ModifDate");
 
                     b.HasKey("Id");
 
@@ -92,11 +114,17 @@ namespace VcwBackend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
                     b.Property<Guid?>("FilterId");
 
                     b.Property<Guid?>("IdeaId");
 
                     b.Property<bool?>("IsPassed");
+
+                    b.Property<DateTime>("ModifDate");
 
                     b.Property<int?>("Rank");
 
@@ -114,7 +142,13 @@ namespace VcwBackend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
                     b.Property<string>("Description");
+
+                    b.Property<DateTime>("ModifDate");
 
                     b.HasKey("Id");
 
@@ -126,9 +160,15 @@ namespace VcwBackend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
                     b.Property<string>("Description");
 
                     b.Property<Guid?>("InvitId");
+
+                    b.Property<DateTime>("ModifDate");
 
                     b.HasKey("Id");
 
@@ -144,7 +184,13 @@ namespace VcwBackend.Migrations
 
                     b.Property<Guid?>("ChallengeId");
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
                     b.Property<bool?>("IsMaster");
+
+                    b.Property<DateTime>("ModifDate");
 
                     b.Property<Guid?>("UserId");
 
@@ -162,13 +208,25 @@ namespace VcwBackend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Company");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
                     b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
+                    b.Property<DateTime>("ModifDate");
+
                     b.Property<string>("Password");
+
+                    b.Property<byte[]>("ProfileImage");
+
+                    b.Property<string>("Title");
 
                     b.Property<string>("Username");
 
@@ -179,7 +237,7 @@ namespace VcwBackend.Migrations
 
             modelBuilder.Entity("VcwBackend.Models.Attachment", b =>
                 {
-                    b.HasOne("VcwBackend.Models.Category", "Category")
+                    b.HasOne("VcwBackend.Models.Category")
                         .WithMany("Attachments")
                         .HasForeignKey("CategoryId");
                 });

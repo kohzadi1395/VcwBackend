@@ -3,15 +3,12 @@ using System.Collections.Generic;
 
 namespace VcwBackend.Models
 {
-    public class Invit
+    public class Invit : BaseEntity
     {
         public Invit()
         {
             Ideas = new HashSet<Idea>();
         }
-
-        public Guid Id { get; set; }
-
         public bool? IsMaster { get; set; }
 
         public Guid? ChallengeId { get; set; }

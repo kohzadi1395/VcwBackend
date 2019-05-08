@@ -30,10 +30,8 @@ namespace VcwBackend.Controllers
         [HttpGet]
         public ActionResult Get()
         {
-            var users = repository.GetAllUsers();
-
-            if (users == null)
-                return NotFound("User not found");
+            var users = repository.GetAllUsers()
+                .Where(x => x.Email.Contains("Hossein"));
 
             return Ok(users);
         }

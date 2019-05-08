@@ -2,9 +2,8 @@ using System;
 
 namespace VcwBackend.Models
 {
-    public class ExamIdea
+    public class ExamIdea : BaseEntity
     {
-        public Guid Id { get; set; }
 
         public Guid? FilterId { get; set; }
 

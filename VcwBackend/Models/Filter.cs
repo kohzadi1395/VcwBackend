@@ -4,14 +4,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VcwBackend.Models
 {
-    public class Filter
+    public class Filter : BaseEntity
     {
         public Filter()
         {
             ExamIdeas = new HashSet<ExamIdea>();
         }
-
-        public Guid Id { get; set; }
 
          public string Description { get; set; }
 
