@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VcwBackend.DTOs;
@@ -18,6 +15,7 @@ namespace VcwBackend.Controllers
     public class ChallengeController : ControllerBase
     {
         private readonly ChallengeRepository _challengeRepository;
+
         public ChallengeController()
         {
             _challengeRepository = new ChallengeRepository();
@@ -38,7 +36,7 @@ namespace VcwBackend.Controllers
 //           _challengeRepository.Insert(challenge);
 //            return Ok();
 //        }
-        
+
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -50,11 +48,11 @@ namespace VcwBackend.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]ChallengeUserPostDto challengeDto)
+        public IActionResult Post([FromBody] ChallengeUserPostDto challengeDto)
         {
             try
             {
-                var invites = challengeDto.InvitePersonId.Select(x => new Invit
+                var invites = challengeDto.InvitePersonId.Select(x => new Invite
                 {
                     Id = Guid.NewGuid(),
                     Deleted = false,
@@ -63,21 +61,20 @@ namespace VcwBackend.Controllers
                 }).ToList();
                 var challenge = new Challenge
                 {
-                    ChallengeType=challengeDto.ChallengeType,
+                    ChallengeType = challengeDto.ChallengeType,
                     CompanyName = challengeDto.CompanyName,
-                    Deadline=  challengeDto.Deadline,
+                    Deadline = challengeDto.Deadline,
                     Description = challengeDto.Description,
                     FirstBounce = challengeDto.FirstBounce,
                     SecondBounce = challengeDto.SecondBounce,
                     ThirdBounce = challengeDto.ThirdBounce,
-                    ChallengeState=challengeDto.ChallengeState,
-                    Deleted =false,
+                    ChallengeState = challengeDto.ChallengeState,
+                    Deleted = false,
                     Title = challengeDto.Title,
                     Id = challengeDto.Id,
-                    CreateDate=DateTime.Now,
+                    CreateDate = DateTime.Now,
                     ModifDate = DateTime.Now,
-                    Invites= invites
-
+                    Invites = invites
                 };
                 _challengeRepository.Insert(challenge);
                 return Ok();
@@ -90,7 +87,7 @@ namespace VcwBackend.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody]string value)
+        public void Put(Guid id, [FromBody] string value)
         {
         }
 
@@ -113,6 +110,7 @@ namespace VcwBackend.Controllers
             var allChallenges = _challengeRepository.GetAllChallenges();
             return allChallenges;
         }
+
         [HttpPost("upload")]
         public ActionResult OnPostUpload(IFormFile file)
         {
@@ -139,6 +137,32 @@ namespace VcwBackend.Controllers
 //            }
             return Content("Success");
         }
-    }
 
+        [HttpPost("InsertIdea")]
+        public IActionResult InsertIdea([FromBody] ChallengeIdeaDto challengeIdeaDto)
+        {
+            try
+            {
+                _challengeRepository.InsertIdea(challengeIdeaDto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [HttpPost("InsertFilter")]
+        public IActionResult InsertFilter([FromBody] ChallengeFilterDto challengeFilterDto)
+        {
+            try
+            {
+                _challengeRepository.InsertFiletr(challengeFilterDto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+    }
 }

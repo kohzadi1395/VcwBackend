@@ -52,6 +52,12 @@ namespace VcwBackend.Migrations
 
                     b.Property<string>("CategoryName");
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<bool>("Deleted");
+
+                    b.Property<DateTime>("ModifDate");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -70,7 +76,8 @@ namespace VcwBackend.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<DateTime?>("Deadline");
+                    b.Property<DateTime?>("Deadline")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Deleted");
 
@@ -109,34 +116,6 @@ namespace VcwBackend.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("VcwBackend.Models.ExamIdea", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<Guid?>("FilterId");
-
-                    b.Property<Guid?>("IdeaId");
-
-                    b.Property<bool?>("IsPassed");
-
-                    b.Property<DateTime>("ModifDate");
-
-                    b.Property<int?>("Rank");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FilterId");
-
-                    b.HasIndex("IdeaId");
-
-                    b.ToTable("ExamIdeas");
-                });
-
             modelBuilder.Entity("VcwBackend.Models.Filter", b =>
                 {
                     b.Property<Guid>("Id")
@@ -148,9 +127,15 @@ namespace VcwBackend.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<Guid>("InviteId");
+
                     b.Property<DateTime>("ModifDate");
 
+                    b.Property<string>("Title");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("InviteId");
 
                     b.ToTable("Filters");
                 });
@@ -168,16 +153,20 @@ namespace VcwBackend.Migrations
 
                     b.Property<Guid?>("InvitId");
 
+                    b.Property<Guid?>("InviteId");
+
                     b.Property<DateTime>("ModifDate");
+
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvitId");
+                    b.HasIndex("InviteId");
 
                     b.ToTable("Ideas");
                 });
 
-            modelBuilder.Entity("VcwBackend.Models.Invit", b =>
+            modelBuilder.Entity("VcwBackend.Models.Invite", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -237,30 +226,27 @@ namespace VcwBackend.Migrations
 
             modelBuilder.Entity("VcwBackend.Models.Attachment", b =>
                 {
-                    b.HasOne("VcwBackend.Models.Category")
+                    b.HasOne("VcwBackend.Models.Category", "Category")
                         .WithMany("Attachments")
                         .HasForeignKey("CategoryId");
                 });
 
-            modelBuilder.Entity("VcwBackend.Models.ExamIdea", b =>
+            modelBuilder.Entity("VcwBackend.Models.Filter", b =>
                 {
-                    b.HasOne("VcwBackend.Models.Filter", "Filter")
-                        .WithMany("ExamIdeas")
-                        .HasForeignKey("FilterId");
-
-                    b.HasOne("VcwBackend.Models.Idea", "Idea")
-                        .WithMany("ExamIdeas")
-                        .HasForeignKey("IdeaId");
+                    b.HasOne("VcwBackend.Models.Invite", "Invite")
+                        .WithMany("Filters")
+                        .HasForeignKey("InviteId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("VcwBackend.Models.Idea", b =>
                 {
-                    b.HasOne("VcwBackend.Models.Invit", "Invite")
+                    b.HasOne("VcwBackend.Models.Invite", "Invite")
                         .WithMany("Ideas")
-                        .HasForeignKey("InvitId");
+                        .HasForeignKey("InviteId");
                 });
 
-            modelBuilder.Entity("VcwBackend.Models.Invit", b =>
+            modelBuilder.Entity("VcwBackend.Models.Invite", b =>
                 {
                     b.HasOne("VcwBackend.Models.Challenge", "Challenge")
                         .WithMany("Invites")

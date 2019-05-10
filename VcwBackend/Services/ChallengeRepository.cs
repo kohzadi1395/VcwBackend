@@ -33,15 +33,17 @@ namespace VcwBackend.Services
                     CompanyName = x.CompanyName,
                     ChallengeState = x.ChallengeState
                 })
-                .OrderBy(x=>x.ChallengeState)
+                .OrderBy(x => x.ChallengeState)
                 .ToList();
         }
 
         public Challenge GetChallenge(Guid id)
         {
             return _context.Challenges
-                .Include(x => x.Invites)
-                .ThenInclude(y => y.User)
+                .Include(challenge => challenge.Invites)
+                .ThenInclude(invite => invite.Ideas)
+                .Include(challenge => challenge.Invites)
+                .ThenInclude(invite => invite.Filters)
                 .Where(x => x.Id == id)
                 .Select(x => new ChallengeUserGetDto
                 {
@@ -55,7 +57,9 @@ namespace VcwBackend.Services
                     ChallengeState = x.ChallengeState,
                     ChallengeType = x.ChallengeType,
                     CompanyName = x.CompanyName,
-                    InvitePerson = x.Invites.Select(y => y.User).ToList()
+                    InvitePerson = x.Invites.Select(y => y.User).ToList(),
+                    Ideas = x.Invites.SelectMany(y => y.Ideas).ToList(),
+                    Filters = x.Invites.SelectMany(y => y.Filters).ToList()
                 })
                 .FirstOrDefault();
         }
@@ -69,6 +73,33 @@ namespace VcwBackend.Services
         public void Remove(Guid id)
         {
             _context.Challenges.Remove(new Challenge {Id = id});
+            _context.SaveChanges();
+        }
+
+        public void InsertIdea(ChallengeIdeaDto challengeIdeaDto)
+        {
+            var invite = new Invite
+            {
+                Id = Guid.NewGuid(),
+                ChallengeId = challengeIdeaDto.Id,
+                Ideas = challengeIdeaDto.Ideas
+            };
+            _context.Invites.Update(invite);
+            var challenge = _context.Challenges.First(x => x.Id == challengeIdeaDto.Id);
+            challenge.ChallengeState += 1;
+            _context.SaveChanges();
+        }
+        public void InsertFiletr(ChallengeFilterDto challengeFilterDto)
+        {
+            var invite = new Invite
+            {
+                Id = Guid.NewGuid(),
+                ChallengeId = challengeFilterDto.Id,
+                Filters = challengeFilterDto.Filters
+            };
+            _context.Invites.Update(invite);
+            var challenge = _context.Challenges.First(x => x.Id == challengeFilterDto.Id);
+            challenge.ChallengeState += 1;
             _context.SaveChanges();
         }
     }

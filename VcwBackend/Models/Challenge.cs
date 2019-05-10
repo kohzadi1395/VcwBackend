@@ -1,25 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VcwBackend.Models
 {
-    public class Challenge: BaseEntity
+    public class Challenge : BaseEntity
     {
         public Challenge()
         {
-            Invites = new HashSet<Invit>();
+            Invites = new HashSet<Invite>();
         }
 
-        public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public string ChallengeType { get; set; }
-
-        public string CompanyName { get; set; }
-
-        public DateTime? Deadline { get; set; }
+        [Column(TypeName = "datetime2")] public DateTime? Deadline { get; set; }
 
         public decimal? FirstBounce { get; set; }
 
@@ -27,8 +22,14 @@ namespace VcwBackend.Models
 
         public decimal? ThirdBounce { get; set; }
 
+        public string ChallengeType { get; set; }
+
+        public string Title { get; set; }
+
         public int ChallengeState { get; set; }
 
-        public virtual ICollection<Invit> Invites { get; set; }
+        public string CompanyName { get; set; }
+
+        public virtual ICollection<Invite> Invites { get; set; }
     }
 }

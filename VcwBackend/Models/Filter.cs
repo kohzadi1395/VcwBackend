@@ -1,18 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace VcwBackend.Models
 {
     public class Filter : BaseEntity
     {
-        public Filter()
-        {
-            ExamIdeas = new HashSet<ExamIdea>();
-        }
+        public string Description { get; set; }
 
-         public string Description { get; set; }
+        public Guid InviteId { get; set; }
 
-        public virtual ICollection<ExamIdea> ExamIdeas { get; set; }
+        public string Title { get; set; }
+
+        public virtual Invite Invite { get; set; }
     }
 }

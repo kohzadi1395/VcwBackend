@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace VcwBackend.Models
 {
@@ -9,6 +8,5 @@ namespace VcwBackend.Models
         public DateTime CreateDate { get; set; }
         public DateTime ModifDate { get; set; }
         public bool Deleted { get; set; }
-
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace VcwBackend.Models
 {
@@ -9,9 +8,11 @@ namespace VcwBackend.Models
 
         public string Type { get; set; }
 
-         public string Description { get; set; }
+        public string Description { get; set; }
 
         public Guid? CategoryId { get; set; }
 
+
+        public virtual Category Category { get; set; }
     }
 }
