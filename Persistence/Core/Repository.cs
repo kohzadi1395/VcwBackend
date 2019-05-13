@@ -9,13 +9,13 @@ namespace Persistence.Core
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        protected readonly RecruiterContext _context;
         private readonly DbSet<TEntity> _dbSet;
+        protected readonly ApiContext Context;
 
-        public Repository(RecruiterContext context)
+        public Repository(ApiContext context)
         {
-            _context = context;
-            _dbSet = _context.Set<TEntity>();
+            Context = context;
+            _dbSet = Context.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
@@ -33,7 +33,7 @@ namespace Persistence.Core
             throw new NotImplementedException();
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(Guid id)
         {
             return _dbSet.Find(id);
         }

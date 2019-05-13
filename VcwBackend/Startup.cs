@@ -1,9 +1,18 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Text;
+using Application.Interfaces;
+using Application.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Persistence;
+using Persistence.Core;
+using Persistence.Repositories;
 
 namespace VcwBackend
 {
@@ -24,6 +33,10 @@ namespace VcwBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //            services.AddDbContext<ApiContext>(context =>
+            //                context.UseSqlServer(Configuration.GetConnectionString("RecruiterSystem")));
+            services.AddDbContext<ApiContext>(context =>
+                context.UseSqlServer("Data Source=.;Initial Catalog=VCW;Integrated Security=True"));
             services.AddCors(options => options.AddPolicy("Cors", builder =>
             {
                 builder
@@ -31,7 +44,26 @@ namespace VcwBackend
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => {
+            services.AddScoped<IChallengeRepository, ChallengeRepository>();
+            services.AddScoped<IChallengeService, ChallengeService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IIdeaRepository, IdeaRepository>();
+            services.AddScoped<IFilterRepository, FilterRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+//            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//                .AddJwtBearer(options =>
+//                {
+//                    options.TokenValidationParameters = new TokenValidationParameters
+//                    {
+//                        ValidateIssuerSigningKey = true,
+//                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+//                            .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+//                        ValidateIssuer = false,
+//                        ValidateAudience = false
+//                    };
+//                });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options =>
+            {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
         }

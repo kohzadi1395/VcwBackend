@@ -12,7 +12,6 @@ namespace Domain.Entities
 
         public Guid? CategoryId { get; set; }
 
-        public Guid? TableId { get; set; }
 
         public virtual Category Category { get; set; }
     }

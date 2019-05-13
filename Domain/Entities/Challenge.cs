@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
@@ -7,16 +8,13 @@ namespace Domain.Entities
     {
         public Challenge()
         {
-            Invites = new HashSet<Invit>();
+            Invites = new HashSet<Invite>();
         }
 
-        public Guid Id { get; set; }
-
-        public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public DateTime? Deadline { get; set; }
+        [Column(TypeName = "datetime2")] public DateTime? Deadline { get; set; }
 
         public decimal? FirstBounce { get; set; }
 
@@ -24,30 +22,14 @@ namespace Domain.Entities
 
         public decimal? ThirdBounce { get; set; }
 
+        public string ChallengeType { get; set; }
+
+        public string Title { get; set; }
+
+        public int ChallengeState { get; set; }
+
         public string CompanyName { get; set; }
 
-
-        public int ChallengeStateCode { get; set; }
-
-        public bool ChallengeType { get; set; }
-
-        public virtual ICollection<Invit> Invites { get; set; }
-    }
-
-    //    enum ChallengeState
-    //    {
-    //        DiscoverValue,
-    //        CreateValue,
-    //        ValidateValue,
-    //        CaptureValue,
-    //        ConsolidateValue
-    //    }
-    internal enum ChallengeState
-    {
-        DiscoverValue,
-        CreateValue,
-        ValidateValue,
-        CaptureValue,
-        ConsolidateValue
+        public virtual ICollection<Invite> Invites { get; set; }
     }
 }

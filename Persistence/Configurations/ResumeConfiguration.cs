@@ -1,12 +1,12 @@
-﻿using Application.DTOs;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace RecruiterSystem.Persistence.Configurations
+namespace Persistence.Configurations
 {
-    public class ChallengeConfiguration : Microsoft.EntityFrameworkCore.IEntityTypeConfiguration<Challenge>
+    public class ChallengeConfiguration : IEntityTypeConfiguration<Challenge>
     {
-        public void Configure(EntityTypeBuilder<Resume> builder)
+        public void Configure(EntityTypeBuilder<Challenge> builder)
         {
         }
     }

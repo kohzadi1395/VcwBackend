@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.DTOs;
+using Application.Interfaces;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using VcwBackend.DTOs;
-using VcwBackend.Models;
-using VcwBackend.Services;
 
 namespace VcwBackend.Controllers
 {
@@ -14,35 +14,39 @@ namespace VcwBackend.Controllers
     [ApiController]
     public class ChallengeController : ControllerBase
     {
-        private readonly ChallengeRepository _challengeRepository;
+        private readonly IChallengeService _challengeService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ChallengeController()
+        public ChallengeController(IChallengeService challengeService, IUnitOfWork unitOfWork)
         {
-            _challengeRepository = new ChallengeRepository();
+            _challengeService = challengeService;
+            _unitOfWork = unitOfWork;
         }
 
-//        [HttpPost]
-//        public async Task<IActionResult> PostProfilePicture(List<IFormFile> file)
-//        {
-//            var stream = file[0].OpenReadStream();
-//            var name = file[0].FileName;
-//
-//            return Ok();
-//        }
-//
-//        [HttpPost]
-//        public async Task<IActionResult> InsertChallenge([FromBody] Challenge challenge)
-//        {
-//           _challengeRepository.Insert(challenge);
-//            return Ok();
-//        }
+
+
+        //        [HttpPost]
+        //        public async Task<IActionResult> PostProfilePicture(List<IFormFile> file)
+        //        {
+        //            var stream = file[0].OpenReadStream();
+        //            var name = file[0].FileName;
+        //
+        //            return Ok();
+        //        }
+        //
+        //        [HttpPost]
+        //        public async Task<IActionResult> InsertChallenge([FromBody] Challenge challenge)
+        //        {
+        //           _challengeRepository.Insert(challenge);
+        //            return Ok();
+        //        }
 
 
         // GET api/values/5
         [HttpGet("{id}")]
         public Challenge Get(Guid id)
         {
-            var challenge = _challengeRepository.GetChallenge(id);
+            var challenge = _challengeService.GetChallenge(id);
             return challenge;
         }
 
@@ -73,11 +77,12 @@ namespace VcwBackend.Controllers
                     Title = challengeDto.Title,
                     Id = challengeDto.Id,
                     CreateDate = DateTime.Now,
-                    ModifDate = DateTime.Now,
+                    ModifyDate = DateTime.Now,
                     Invites = invites
                 };
-                _challengeRepository.Insert(challenge);
-                return Ok();
+                _challengeService.AddChallenge(challenge);
+                _unitOfWork.Commit();
+                return Ok(challenge.Id);
             }
             catch (Exception e)
             {
@@ -93,9 +98,10 @@ namespace VcwBackend.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public OkObjectResult Delete(Guid id)
         {
-            _challengeRepository.Remove(id);
+            _challengeService.Remove(id);
+            return Ok(id);
         }
 //        [HttpGet]
 //        public IEnumerable<ChallengeUserGetDto> Get()
@@ -107,7 +113,7 @@ namespace VcwBackend.Controllers
         [HttpGet]
         public IEnumerable<ChallengeUserGetDto> GetAllChallenge()
         {
-            var allChallenges = _challengeRepository.GetAllChallenges();
+            var allChallenges = _challengeService.GetAllChallenges();
             return allChallenges;
         }
 
@@ -138,31 +144,7 @@ namespace VcwBackend.Controllers
             return Content("Success");
         }
 
-        [HttpPost("InsertIdea")]
-        public IActionResult InsertIdea([FromBody] ChallengeIdeaDto challengeIdeaDto)
-        {
-            try
-            {
-                _challengeRepository.InsertIdea(challengeIdeaDto);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-        [HttpPost("InsertFilter")]
-        public IActionResult InsertFilter([FromBody] ChallengeFilterDto challengeFilterDto)
-        {
-            try
-            {
-                _challengeRepository.InsertFiletr(challengeFilterDto);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
+
+        
     }
 }

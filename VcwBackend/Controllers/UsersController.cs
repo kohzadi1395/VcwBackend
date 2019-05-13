@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using VcwBackend.Core;
-using VcwBackend.Services;
+using Persistence.Repositories;
 
 namespace VcwBackend.Controllers
 {
@@ -10,27 +10,30 @@ namespace VcwBackend.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        readonly UserRepository repository;
+        private readonly IUserService _userService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UsersController()
+        public UsersController(IUserService userService, IUnitOfWork unitOfWork)
         {
-            this.repository = new UserRepository();
+            _userService = userService;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet("{id}")]
         public ActionResult Get(Guid id)
         {
-            var user = repository.GetUser(id);
+            var user = _userService.GetById(id);
 
             if (user == null)
                 return NotFound("User not found");
 
             return Ok(user);
         }
+
         [HttpGet]
         public ActionResult Get()
         {
-            var users = repository.GetAllUsers()
+            var users = _userService.GetAll()
                 .Where(x => x.Email.Contains("Hossein"));
 
             return Ok(users);

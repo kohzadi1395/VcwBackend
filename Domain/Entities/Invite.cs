@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Domain.Entities
 {
-    public class Invit : BaseEntity
+    public class Invite : BaseEntity
     {
-        public Invit()
+        public Invite()
         {
+            Filters = new HashSet<Filter>();
             Ideas = new HashSet<Idea>();
         }
 
-        public Guid Id { get; set; }
 
         public bool? IsMaster { get; set; }
 
@@ -19,6 +19,8 @@ namespace Domain.Entities
         public Guid? UserId { get; set; }
 
         public virtual Challenge Challenge { get; set; }
+
+        public virtual ICollection<Filter> Filters { get; set; }
 
         public virtual ICollection<Idea> Ideas { get; set; }
 

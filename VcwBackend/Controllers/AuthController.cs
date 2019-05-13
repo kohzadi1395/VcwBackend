@@ -1,12 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Domain.Entities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using VcwBackend.Models;
-using VcwBackend.Services;
+using Persistence.Repositories;
 
 namespace VcwBackend.Controllers
 {
@@ -51,24 +51,24 @@ namespace VcwBackend.Controllers
 
         private JwtPacket CreateJwtPacket(User user)
         {
-                var jwtTokenHandler = new JwtSecurityTokenHandler();
-                IdentityModelEventSource.ShowPII = true;
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            IdentityModelEventSource.ShowPII = true;
 
-                var claims = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Email, user.Email)
-                });
-                const string securityKeyString = "KoHzAdIhOsSeIn is My secret Key";
+            var claims = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Email, user.Email)
+            });
+            const string securityKeyString = "KoHzAdIhOsSeIn is My secret Key";
 //                const string securityKeyString = "12345";
-                var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKeyString));
-                var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKeyString));
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
-                var token = jwtTokenHandler.CreateJwtSecurityToken(subject: claims,
-                    signingCredentials: signingCredentials);
+            var token = jwtTokenHandler.CreateJwtSecurityToken(subject: claims,
+                signingCredentials: signingCredentials);
 
-                var tokenString = jwtTokenHandler.WriteToken(token);
+            var tokenString = jwtTokenHandler.WriteToken(token);
 
-                return new JwtPacket {Token = tokenString, FirstName = user.FirstName};
+            return new JwtPacket {Token = tokenString, FirstName = user.FirstName};
         }
     }
 }

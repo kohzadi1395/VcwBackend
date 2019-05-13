@@ -4,9 +4,9 @@ namespace Persistence.Core
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly RecruiterContext _context;
+        private readonly ApiContext _context;
 
-        public UnitOfWork(RecruiterContext context)
+        public UnitOfWork(ApiContext context)
         {
             _context = context;
         }
