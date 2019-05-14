@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Application.Interfaces;
+﻿using Application.Interfaces.User;
 using Domain.Entities;
 using Persistence.Core;
 

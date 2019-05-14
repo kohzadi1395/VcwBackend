@@ -1,21 +1,21 @@
-using System;
 using System.Collections.Generic;
 
 namespace Domain.Entities
 {
-    public class Filter : BaseEntity
+    public class Status : BaseEntity
     {
-        public Filter()
+        public Status()
         {
             FilterStatus = new HashSet<FilterStatus>();
+            IdeaStatus = new HashSet<IdeaStatus>();
         }
 
         public string Description { get; set; }
 
-        public Guid InviteId { get; set; }
-
         public string Title { get; set; }
 
         public virtual ICollection<FilterStatus> FilterStatus { get; set; }
+
+        public virtual ICollection<IdeaStatus> IdeaStatus { get; set; }
     }
 }

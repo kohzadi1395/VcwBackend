@@ -1,14 +1,16 @@
-﻿using System.Text;
-using Application.Interfaces;
+﻿using Application.Interfaces.Challenge;
+using Application.Interfaces.Filter;
+using Application.Interfaces.General;
+using Application.Interfaces.Idea;
+using Application.Interfaces.Invite;
+using Application.Interfaces.User;
 using Application.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Persistence;
 using Persistence.Core;
@@ -33,10 +35,10 @@ namespace VcwBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //            services.AddDbContext<ApiContext>(context =>
-            //                context.UseSqlServer(Configuration.GetConnectionString("RecruiterSystem")));
+            var connectionString = Configuration.GetConnectionString("RecruiterSystem");
             services.AddDbContext<ApiContext>(context =>
-                context.UseSqlServer("Data Source=.;Initial Catalog=VCW;Integrated Security=True"));
+                context.UseSqlServer(connectionString));
+
             services.AddCors(options => options.AddPolicy("Cors", builder =>
             {
                 builder
@@ -45,10 +47,13 @@ namespace VcwBackend
                     .AllowAnyHeader();
             }));
             services.AddScoped<IChallengeRepository, ChallengeRepository>();
+            services.AddScoped<IInviteRepository, InviteRepository>();
             services.AddScoped<IChallengeService, ChallengeService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIdeaRepository, IdeaRepository>();
+            services.AddScoped<IIdeaService, IdeaService>();
             services.AddScoped<IFilterRepository, FilterRepository>();
+            services.AddScoped<IFilterService, FilterService>();
             services.AddScoped<IUserRepository, UserRepository>();
 //            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //                .AddJwtBearer(options =>

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities
 {
@@ -7,6 +8,7 @@ namespace Domain.Entities
         private DateTime _createDate;
         private Guid _id;
 
+        [Key]
         public Guid Id
         {
             get

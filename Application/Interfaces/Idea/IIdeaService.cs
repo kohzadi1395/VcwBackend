@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using Application.DTOs;
-using Domain.Entities;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Idea
 {
     public interface IIdeaService
     {
-        IEnumerable<Idea> GetAllIdeas();
-        void Insert(Idea idea);
+        IEnumerable<Domain.Entities.Idea> GetAllIdeas();
+        void Insert(Domain.Entities.Idea idea);
         void Insert(ChallengeIdeaDto challengeIdeaDto);
     }
 }

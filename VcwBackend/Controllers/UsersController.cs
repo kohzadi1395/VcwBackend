@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using Application.Interfaces;
+using Application.Interfaces.General;
+using Application.Interfaces.User;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Repositories;
 
 namespace VcwBackend.Controllers
 {
@@ -10,8 +10,8 @@ namespace VcwBackend.Controllers
     [Route("api/Users")]
     public class UsersController : Controller
     {
-        private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
 
         public UsersController(IUserService userService, IUnitOfWork unitOfWork)
         {

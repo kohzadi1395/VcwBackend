@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using Application.DTOs;
-using Domain.Entities;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Filter
 {
     public interface IFilterService
     {
-        IEnumerable<Filter> GetAllFilters();
-        void Insert(Filter filter);
+        IEnumerable<Domain.Entities.Filter> GetAllFilters();
+        void Insert(Domain.Entities.Filter filter);
         void Insert(ChallengeFilterDto challengeFilterDto);
     }
 }

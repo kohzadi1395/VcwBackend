@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Application.DTOs;
 using Application.Interfaces.General;
-using Application.Interfaces.Idea;
+using Application.Interfaces.IdeaStatus;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,20 +9,29 @@ namespace VcwBackend.Controllers
 {
     [Produces("application/json")]
     [Route("api/Idea")]
-    public class IdeaController : Controller
+    public class IdeaSelectionController : Controller
     {
-        private readonly IIdeaService _ideaService;
+        private readonly IIdeaStatusService _ideaStatusService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public IdeaController(IIdeaService ideaService, IUnitOfWork unitOfWork)
+        public IdeaSelectionController(IIdeaStatusService ideaStatusService, IUnitOfWork unitOfWork)
         {
-            _ideaService = ideaService;
+            _ideaStatusService = ideaStatusService;
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<Idea> Get()
+        public IActionResult Get([FromBody] ChallengeSelectionIdea challengeSelectionIdea)
         {
-            return _ideaService.GetAllIdeas();
+            try
+            {
+                challengeSelectionIdea = _ideaStatusService.GetSelectionIdea(challengeSelectionIdea);
+                _unitOfWork.Commit();
+                return Ok(challengeSelectionIdea);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost]
@@ -31,7 +39,6 @@ namespace VcwBackend.Controllers
         {
             try
             {
-                _ideaService.Insert(idea);
                 _unitOfWork.Commit();
                 return Ok(idea.Id);
             }
@@ -46,7 +53,6 @@ namespace VcwBackend.Controllers
         {
             try
             {
-                _ideaService.Insert(challengeIdeaDto);
                 _unitOfWork.Commit();
                 return Ok(challengeIdeaDto.Id);
             }

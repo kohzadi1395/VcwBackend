@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Filter;
 using Domain.Entities;
 using Persistence.Core;
 

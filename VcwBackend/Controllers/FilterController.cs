@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Application.DTOs;
-using Application.Interfaces;
+using Application.Interfaces.Filter;
+using Application.Interfaces.General;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace VcwBackend.Controllers
     public class FilterController : Controller
     {
         private readonly IFilterService _filterService;
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public FilterController(IFilterService filterService, IUnitOfWork unitOfWork)
         {
@@ -32,6 +33,7 @@ namespace VcwBackend.Controllers
             _unitOfWork.Commit();
             return Ok(filter.Id);
         }
+
         [HttpPost("InsertFilter")]
         public IActionResult InsertFilter([FromBody] ChallengeFilterDto challengeFilterDto)
         {
@@ -46,6 +48,5 @@ namespace VcwBackend.Controllers
                 return BadRequest(e.Message);
             }
         }
-
     }
 }

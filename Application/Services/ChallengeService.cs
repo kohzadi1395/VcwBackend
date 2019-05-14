@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.DTOs;
-using Application.Interfaces;
+using Application.Interfaces.Challenge;
 using Domain.Entities;
 
 namespace Application.Services
@@ -14,6 +14,7 @@ namespace Application.Services
         {
             _challengeRepository = challengeRepository;
         }
+
         public IEnumerable<ChallengeUserGetDto> GetAllChallenges()
         {
             return _challengeRepository.GetAllChallenges();
@@ -26,12 +27,12 @@ namespace Application.Services
 
         public void AddChallenge(Challenge challenge)
         {
-            throw new NotImplementedException();
+            _challengeRepository.Add(challenge);
         }
 
-        public void Remove(Guid id)
+        public void RemoveChallenge(Guid id)
         {
-            throw new NotImplementedException();
+            _challengeRepository.Remove(new Challenge {Id = id});
         }
     }
 }

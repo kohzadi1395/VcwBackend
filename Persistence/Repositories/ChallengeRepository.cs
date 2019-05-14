@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.DTOs;
-using Application.Interfaces;
+using Application.Interfaces.Challenge;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Core;
@@ -66,16 +66,6 @@ namespace Persistence.Repositories
                 .FirstOrDefault();
         }
 
-        public void Insert(Challenge challenge)
-        {
-            _context.Challenges.Add(challenge);
-        }
-
-        public void Remove(Guid id)
-        {
-            _context.Challenges.Remove(new Challenge {Id = id});
-        }
-
         public void InsertIdea(ChallengeIdeaDto challengeIdeaDto)
         {
             var invite = _context.Invites.FirstOrDefault(x => x.ChallengeId == challengeIdeaDto.Id
@@ -115,6 +105,11 @@ namespace Persistence.Repositories
             var challenge = _context.Challenges.First(x => x.Id == challengeFilterDto.Id);
             if (challenge.ChallengeState == 3)
                 challenge.ChallengeState += 1;
+        }
+
+        public void Remove(Guid id)
+        {
+            _context.Challenges.Remove(new Challenge {Id = id});
         }
     }
 }

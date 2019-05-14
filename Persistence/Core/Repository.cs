@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Application.Interfaces;
+using System.Linq.Expressions;
+using Application.Interfaces.General;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,24 +19,33 @@ namespace Persistence.Core
             _dbSet = Context.Set<TEntity>();
         }
 
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> criteria)
+        {
+            return _dbSet.Where(criteria);
+        }
+
         public void Add(TEntity entity)
         {
+            entity.CreateDate = DateTime.Now;
+            entity.ModifyDate = DateTime.Now;
+
             _dbSet.Add(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
         {
+            entities = entities.Select(x =>
+            {
+                x.CreateDate = DateTime.Now;
+                x.ModifyDate = DateTime.Now;
+                return x;
+            });
             _dbSet.AddRange(entities);
-        }
-
-        public IEnumerable<TEntity> Find(ISpecification<TEntity> spec)
-        {
-            throw new NotImplementedException();
         }
 
         public TEntity GetById(Guid id)
         {
-            return _dbSet.Find(id);
+            return _dbSet.FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<TEntity> GetAll()
@@ -51,6 +61,17 @@ namespace Persistence.Core
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             _dbSet.RemoveRange(entities);
+        }
+
+        public void Update(TEntity entity)
+        {
+            entity.ModifyDate = DateTime.Now;
+            _dbSet.Update(entity);
+        }
+
+        public IEnumerable<TEntity> Find(ISpecification<TEntity> spec)
+        {
+            throw new NotImplementedException();
         }
     }
 }

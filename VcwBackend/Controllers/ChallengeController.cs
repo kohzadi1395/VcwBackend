@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Application.DTOs;
-using Application.Interfaces;
+using Application.Interfaces.Challenge;
+using Application.Interfaces.General;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +22,6 @@ namespace VcwBackend.Controllers
             _challengeService = challengeService;
             _unitOfWork = unitOfWork;
         }
-
-
 
         //        [HttpPost]
         //        public async Task<IActionResult> PostProfilePicture(List<IFormFile> file)
@@ -98,26 +96,6 @@ namespace VcwBackend.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public OkObjectResult Delete(Guid id)
-        {
-            _challengeService.Remove(id);
-            return Ok(id);
-        }
-//        [HttpGet]
-//        public IEnumerable<ChallengeUserGetDto> Get()
-//        {
-//            var allChallenges = _challengeRepository.GetAllChallenges().Take(10);
-//            return allChallenges;
-//        }
-
-        [HttpGet]
-        public IEnumerable<ChallengeUserGetDto> GetAllChallenge()
-        {
-            var allChallenges = _challengeService.GetAllChallenges();
-            return allChallenges;
-        }
-
-        [HttpPost("upload")]
         public ActionResult OnPostUpload(IFormFile file)
         {
 //            if (files == null || files.Count <= 0)
@@ -144,7 +122,37 @@ namespace VcwBackend.Controllers
             return Content("Success");
         }
 
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _challengeService.RemoveChallenge(id);
+                return Ok(id);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+//        [HttpGet]
+//        public IEnumerable<ChallengeUserGetDto> Get()
+//        {
+//            var allChallenges = _challengeRepository.GetAllChallenges().Take(10);
+//            return allChallenges;
+//        }
 
-        
+        [HttpGet]
+        public IActionResult GetAllChallenge()
+        {
+            try
+            {
+                var allChallenges = _challengeService.GetAllChallenges();
+                return Ok(allChallenges);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

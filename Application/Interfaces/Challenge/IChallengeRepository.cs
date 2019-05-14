@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.DTOs;
-using Domain.Entities;
+using Application.Interfaces.General;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Challenge
 {
-    public interface IChallengeRepository : IRepository<Challenge>
+    public interface IChallengeRepository : IRepository<Domain.Entities.Challenge>
     {
         IEnumerable<ChallengeUserGetDto> GetAllChallenges();
-        Challenge GetChallenge(Guid id);
-        void Insert(Challenge challenge);
+        Domain.Entities.Challenge GetChallenge(Guid id);
         void InsertFilter(ChallengeFilterDto challengeFilterDto);
         void InsertIdea(ChallengeIdeaDto challengeIdeaDto);
-        void Remove(Guid id);
     }
 }
