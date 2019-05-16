@@ -13,6 +13,7 @@ namespace Domain.Entities
         public string Description { get; set; }
 
         public Guid InviteId { get; set; }
+        public Invite Invite { get; set; }
 
         public string Title { get; set; }
 

@@ -2,13 +2,12 @@ using System;
 using Application.DTOs;
 using Application.Interfaces.General;
 using Application.Interfaces.IdeaStatus;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VcwBackend.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Idea")]
+    [Route("api/IdeaSelection")]
     public class IdeaSelectionController : Controller
     {
         private readonly IIdeaStatusService _ideaStatusService;
@@ -20,13 +19,13 @@ namespace VcwBackend.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Get([FromBody] ChallengeSelectionIdea challengeSelectionIdea)
+        public IActionResult Get([FromBody] ChallengeSelectionIdeaDto challengeSelectionIdeaDto)
         {
             try
             {
-                challengeSelectionIdea = _ideaStatusService.GetSelectionIdea(challengeSelectionIdea);
+                challengeSelectionIdeaDto = _ideaStatusService.GetSelectionIdea(challengeSelectionIdeaDto);
                 _unitOfWork.Commit();
-                return Ok(challengeSelectionIdea);
+                return Ok(challengeSelectionIdeaDto);
             }
             catch (Exception e)
             {
@@ -35,12 +34,13 @@ namespace VcwBackend.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Idea idea)
+        public IActionResult Post([FromBody] ChallengeSelectionIdeaDto challengeSelectionIdeaDto)
         {
             try
             {
+                challengeSelectionIdeaDto = _ideaStatusService.GetSelectionIdea(challengeSelectionIdeaDto);
                 _unitOfWork.Commit();
-                return Ok(idea.Id);
+                return Ok(challengeSelectionIdeaDto);
             }
             catch (Exception e)
             {

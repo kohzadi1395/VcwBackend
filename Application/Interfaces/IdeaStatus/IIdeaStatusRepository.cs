@@ -1,10 +1,11 @@
-﻿using Application.DTOs;
+﻿using System;
+using System.Collections.Generic;
 using Application.Interfaces.General;
 
 namespace Application.Interfaces.IdeaStatus
 {
     public interface IIdeaStatusRepository : IRepository<Domain.Entities.IdeaStatus>
     {
-        ChallengeSelectionIdea GetSelectionIdea(ChallengeSelectionIdea challengeSelectionIdea);
+        List<Domain.Entities.IdeaStatus> GetSelectionIdea(Guid? userId, Guid challengeId);
     }
 }

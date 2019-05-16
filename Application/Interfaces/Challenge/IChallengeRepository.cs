@@ -9,7 +9,5 @@ namespace Application.Interfaces.Challenge
     {
         IEnumerable<ChallengeUserGetDto> GetAllChallenges();
         Domain.Entities.Challenge GetChallenge(Guid id);
-        void InsertFilter(ChallengeFilterDto challengeFilterDto);
-        void InsertIdea(ChallengeIdeaDto challengeIdeaDto);
     }
 }

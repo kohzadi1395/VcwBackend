@@ -4,6 +4,6 @@ namespace Application.Interfaces.IdeaStatus
 {
     public interface IIdeaStatusService
     {
-        ChallengeSelectionIdea GetSelectionIdea(ChallengeSelectionIdea challengeSelectionIdea);
+        ChallengeSelectionIdeaDto GetSelectionIdea(ChallengeSelectionIdeaDto challengeSelectionIdeaDto);
     }
 }

@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.DTOs
 {
-    public class ChallengeSelectionIdea
+    public class ChallengeSelectionIdeaDto
     {
         public Guid ChallengeId { get; set; }
         public List<Idea> Kill { get; set; }

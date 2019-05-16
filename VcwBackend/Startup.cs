@@ -2,6 +2,7 @@
 using Application.Interfaces.Filter;
 using Application.Interfaces.General;
 using Application.Interfaces.Idea;
+using Application.Interfaces.IdeaStatus;
 using Application.Interfaces.Invite;
 using Application.Interfaces.User;
 using Application.Services;
@@ -55,6 +56,8 @@ namespace VcwBackend
             services.AddScoped<IFilterRepository, FilterRepository>();
             services.AddScoped<IFilterService, FilterService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IIdeaStatusService, IdeaStatusService>();
+            services.AddScoped<IIdeaStatusRepository, IdeaStatusRepository>();
 //            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //                .AddJwtBearer(options =>
 //                {
