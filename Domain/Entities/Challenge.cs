@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
@@ -11,10 +12,9 @@ namespace Domain.Entities
             Invites = new HashSet<Invite>();
         }
 
-
         public string Description { get; set; }
 
-        [Column(TypeName = "datetime2")] public DateTime? Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
 
         public decimal? FirstBounce { get; set; }
 
@@ -31,5 +31,10 @@ namespace Domain.Entities
         public string CompanyName { get; set; }
 
         public virtual ICollection<Invite> Invites { get; set; }
+
+        public VcwLevel GetChallengeLevel()
+        {
+            return (VcwLevel)ChallengeState;
+        }
     }
 }

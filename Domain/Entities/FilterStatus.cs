@@ -14,6 +14,8 @@ namespace Domain.Entities
 
         public virtual Status Status { get; set; }
 
+        public int Rank { get; set; }
+
         public virtual User User { get; set; }
     }
 }

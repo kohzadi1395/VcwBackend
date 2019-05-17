@@ -29,5 +29,10 @@ namespace Persistence.Repositories
                 .ToList();
             return filterStatuses;
         }
+
+        public FilterStatus GetFilterStatus(Guid filterId)
+        {
+            return _context.FilterStatuses.FirstOrDefault(x => x.FilterId == filterId);
+        }
     }
 }

@@ -108,7 +108,7 @@ namespace Application.Services
 
             var challenge = _challengeRepository.GetById(challengeSelectionIdeaDto.ChallengeId);
 
-            if (challenge.ChallengeState == 3)
+            if (challenge.ChallengeState == 4)
                 challenge.ChallengeState += 1;
             return challengeSelectionIdeaDto;
         }

@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Challenge;
 using Application.Interfaces.Filter;
+using Application.Interfaces.FilterStatus;
 using Application.Interfaces.General;
 using Application.Interfaces.Idea;
 using Application.Interfaces.IdeaStatus;
@@ -58,6 +59,8 @@ namespace VcwBackend
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IIdeaStatusService, IdeaStatusService>();
             services.AddScoped<IIdeaStatusRepository, IdeaStatusRepository>();
+            services.AddScoped<IFilterStatusService, FilterStatusService>();
+            services.AddScoped<IFilterStatusRepository, FilterStatusRepository>();
 //            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //                .AddJwtBearer(options =>
 //                {
