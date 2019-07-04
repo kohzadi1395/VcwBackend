@@ -29,5 +29,11 @@ namespace Persistence.Repositories
                 .ToList();
             return ideaStatuses;
         }
+
+        public IdeaStatus GetIdeaStatus(Guid ideaId)
+        {
+            return _context.IdeaStatuses.FirstOrDefault(x => x.IdeaId == ideaId);
+
+        }
     }
 }

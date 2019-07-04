@@ -7,6 +7,9 @@ namespace Domain.Entities
         public User()
         {
             Invites = new HashSet<Invite>();
+            FilterStatuses = new HashSet<FilterStatus>();
+            IdeaStatuses = new HashSet<IdeaStatus>();
+            FilterIdeaPasseds = new HashSet<FilterIdeaPassed>();
         }
 
         public string Username { get; set; }
@@ -26,5 +29,11 @@ namespace Domain.Entities
         public string Title { get; set; }
 
         public virtual ICollection<Invite> Invites { get; set; }
+
+        public virtual ICollection<FilterStatus> FilterStatuses { get; set; }
+
+        public virtual ICollection<IdeaStatus> IdeaStatuses { get; set; }
+
+        public virtual ICollection<FilterIdeaPassed> FilterIdeaPasseds { get; set; }
     }
 }

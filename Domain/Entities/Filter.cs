@@ -17,8 +17,6 @@ namespace Domain.Entities
 
         public string Title { get; set; }
 
-       
-
         public virtual ICollection<FilterStatus> FilterStatus { get; set; }
     }
 }

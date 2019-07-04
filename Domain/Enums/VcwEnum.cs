@@ -2,7 +2,7 @@
 {
     public enum VcwLevel
     {
-        ChallengeCreated=1,
+        ChallengeCreated = 1,
         ChallengeDoc,
         ChallengeIdea,
         ChallengeFilter,
@@ -10,6 +10,6 @@
         ChallengeSelectedFilter,
         ChallengeFilterRank,
         ChallengeConcept,
-        Challenge3M,
+        Challenge3M
     }
 }

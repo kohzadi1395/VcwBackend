@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Application.DTOs;
 using Application.Interfaces.Challenge;
 using Application.Interfaces.FilterStatus;
@@ -29,12 +28,13 @@ namespace Application.Services
                 challengeSelectionFilterDto.Multiply == null)
                 return GetSelectionFilterList(challengeSelectionFilterDto);
             return InsertSelectionFilter(challengeSelectionFilterDto);
-
         }
+
         public ChallengeSelectionFilterDto GetSelectionFilter(Guid challengeId)
         {
-            var filterStatuses = _filterStatusRepository.GetSelectionFilter(null, challengeId:challengeId);
-            var keep = filterStatuses.OrderBy(x => x.Rank).Where(x => x.Status.Title.ToLower() == "keep").Select(x=>x.Filter).ToList();
+            var filterStatuses = _filterStatusRepository.GetSelectionFilter(null, challengeId);
+            var keep = filterStatuses.OrderBy(x => x.Rank).Where(x => x.Status.Title.ToLower() == "keep")
+                .Select(x => x.Filter).ToList();
 
             var challengeSelectionFilterDto = new ChallengeSelectionFilterDto
             {
@@ -44,7 +44,8 @@ namespace Application.Services
             return challengeSelectionFilterDto;
         }
 
-        public ChallengeSelectionFilterDto UpdateRankFilterStatus(ChallengeSelectionFilterDto challengeSelectionFilterDto)
+        public ChallengeSelectionFilterDto UpdateRankFilterStatus(
+            ChallengeSelectionFilterDto challengeSelectionFilterDto)
         {
             for (var index = 0; index < challengeSelectionFilterDto.Keep.Count; index++)
             {
@@ -65,12 +66,13 @@ namespace Application.Services
         private ChallengeSelectionFilterDto GetSelectionFilterList(
             ChallengeSelectionFilterDto challengeSelectionFilterDto)
         {
-            var filterStatuses = _filterStatusRepository.GetSelectionFilter(null, challengeSelectionFilterDto.ChallengeId);
+            var filterStatuses =
+                _filterStatusRepository.GetSelectionFilter(null, challengeSelectionFilterDto.ChallengeId);
             var reviewFilters = new List<Filter>();
             var killFilters = new List<Filter>();
             var keepFilters = new List<Filter>();
             var multiplyFilters = new List<Filter>();
-            foreach (var filterStatus in filterStatuses.Where(y=>y.Rank!=0).OrderBy(x=>x.Rank))
+            foreach (var filterStatus in filterStatuses.Where(y => y.Rank != 0).OrderBy(x => x.Rank))
                 switch (filterStatus.Status.Title.ToLower())
                 {
                     case "review":
@@ -144,7 +146,6 @@ namespace Application.Services
             }
 
             var challenge = _challengeRepository.GetById(challengeSelectionFilterDto.ChallengeId);
-
             if (challenge.ChallengeState == 5)
                 challenge.ChallengeState += 1;
             return challengeSelectionFilterDto;

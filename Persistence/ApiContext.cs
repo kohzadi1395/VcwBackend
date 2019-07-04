@@ -5,6 +5,10 @@ namespace Persistence
 {
     public class ApiContext : DbContext
     {
+//        public ApiContext()
+//        {
+//            
+//        }
         public ApiContext(DbContextOptions<ApiContext> options) : base(options)
         {
         }
@@ -21,11 +25,12 @@ namespace Persistence
         public virtual DbSet<IdeaStatus> IdeaStatuses { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
-
-        protected override void OnConfiguring(DbContextOptionsBuilder builder)
-        {
-        }
+        public virtual DbSet<FilterIdeaPassed> FilterIdeaPasseds { get; set; }
+        
+//        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+//        {
+//            //builder.UseSqlServer("Data Source=.;Initial Catalog=VCW;Integrated Security=True");
+//        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

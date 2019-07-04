@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Challenge;
+﻿using System;
+using Application.Interfaces.Challenge;
 using Application.Interfaces.Filter;
 using Application.Interfaces.FilterStatus;
 using Application.Interfaces.General;
@@ -6,6 +7,7 @@ using Application.Interfaces.Idea;
 using Application.Interfaces.IdeaStatus;
 using Application.Interfaces.Invite;
 using Application.Interfaces.User;
+using Application.Interfaces.Vcf;
 using Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,18 +29,22 @@ namespace VcwBackend
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration.GetConnectionString("RecruiterSystem");
-            services.AddDbContext<ApiContext>(context =>
+            if (string.IsNullOrEmpty(connectionString))
+                throw new InvalidOperationException("The connection string was not set " +
+                                                    "in the 'EFCORETOOLSDB' environment variable.");
+
+            services.AddDbContext<Persistence.ApiContext>(context =>
                 context.UseSqlServer(connectionString));
 
             services.AddCors(options => options.AddPolicy("Cors", builder =>
@@ -61,18 +67,20 @@ namespace VcwBackend
             services.AddScoped<IIdeaStatusRepository, IdeaStatusRepository>();
             services.AddScoped<IFilterStatusService, FilterStatusService>();
             services.AddScoped<IFilterStatusRepository, FilterStatusRepository>();
-//            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//                .AddJwtBearer(options =>
-//                {
-//                    options.TokenValidationParameters = new TokenValidationParameters
-//                    {
-//                        ValidateIssuerSigningKey = true,
-//                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-//                            .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-//                        ValidateIssuer = false,
-//                        ValidateAudience = false
-//                    };
-//                });
+            services.AddScoped<IFilterIdeaPassedService, FilterIdeaPassedService>();
+            services.AddScoped<IFilterIdeaPassedRepository, FilterIdeaPassedRepository>();
+            //            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //                .AddJwtBearer(options =>
+            //                {
+            //                    options.TokenValidationParameters = new TokenValidationParameters
+            //                    {
+            //                        ValidateIssuerSigningKey = true,
+            //                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+            //                            .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+            //                        ValidateIssuer = false,
+            //                        ValidateAudience = false
+            //                    };
+            //                });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -82,6 +90,7 @@ namespace VcwBackend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else

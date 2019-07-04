@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Enums;
 
 namespace Domain.Entities
@@ -16,11 +15,11 @@ namespace Domain.Entities
 
         public DateTime? Deadline { get; set; }
 
-        public decimal? FirstBounce { get; set; }
+        public int FirstBounce { get; set; }
 
-        public decimal? SecondBounce { get; set; }
+        public int SecondBounce { get; set; }
 
-        public decimal? ThirdBounce { get; set; }
+        public int ThirdBounce { get; set; }
 
         public string ChallengeType { get; set; }
 
@@ -34,7 +33,7 @@ namespace Domain.Entities
 
         public VcwLevel GetChallengeLevel()
         {
-            return (VcwLevel)ChallengeState;
+            return (VcwLevel) ChallengeState;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Application.DTOs;
 using Application.Interfaces.General;
 
 namespace Application.Interfaces.FilterStatus

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Application.DTOs;
 using Application.Interfaces.Challenge;
 using Application.Interfaces.General;
 using Domain.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +19,13 @@ namespace VcwBackend.Controllers
     {
         private readonly IChallengeService _challengeService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHostingEnvironment _environment;
 
-        public ChallengeController(IChallengeService challengeService, IUnitOfWork unitOfWork)
+        public ChallengeController(IHostingEnvironment environment,
+            IChallengeService challengeService, 
+            IUnitOfWork unitOfWork)
         {
+            _environment = environment;
             _challengeService = challengeService;
             _unitOfWork = unitOfWork;
         }
@@ -153,6 +160,38 @@ namespace VcwBackend.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SaveTicket(Challenge challenge)
+        {
+            //TODO: save the ticket ... get id
+
+            var uploadsRootFolder = Path.Combine(_environment.WebRootPath, "uploads");
+            if (!Directory.Exists(uploadsRootFolder))
+            {
+                Directory.CreateDirectory(uploadsRootFolder);
+            }
+
+            var files = Request.Form.Files;
+            foreach (var file in files)
+            {
+                //TODO: do security checks ...!
+
+                if (file == null || file.Length == 0)
+                {
+                    continue;
+                }
+
+                var filePath = Path.Combine(uploadsRootFolder, file.FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream).ConfigureAwait(false);
+                }
+            }
+
+            //return Created("", ticket);
+            return Ok();
         }
     }
 }
