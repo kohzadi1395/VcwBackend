@@ -25,5 +25,6 @@ namespace Domain.Entities
         public virtual User User { get; set; }
 
         public virtual ICollection<FilterIdeaPassed> FilterIdeaPasseds { get; set; }
+        public string Description { get; set; }
     }
 }

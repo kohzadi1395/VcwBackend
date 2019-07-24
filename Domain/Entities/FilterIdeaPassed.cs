@@ -4,11 +4,11 @@ namespace Domain.Entities
 {
     public class FilterIdeaPassed : BaseEntity
     {
-        public Guid FilterStatusId { get; set; }
+        public Guid? FilterStatusId { get; set; }
 
-        public Guid IdeaStatusId { get; set; }
+        public Guid? IdeaStatusId { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         public bool Passed { get; set; }
 

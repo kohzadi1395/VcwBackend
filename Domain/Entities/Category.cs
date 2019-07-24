@@ -13,6 +13,7 @@ namespace Domain.Entities
 
 
         public string CategoryName { get; set; }
+        public int ChallengeState { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attachment> Attachments { get; set; }

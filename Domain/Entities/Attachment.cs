@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
@@ -12,7 +13,11 @@ namespace Domain.Entities
 
         public Guid? CategoryId { get; set; }
 
-
         public virtual Category Category { get; set; }
+        public Guid? ChallengeId { get; set; }
+
+        public virtual Challenge Challenge { get; set; }
+        public int ChallengeState { get; set; }
+
     }
 }

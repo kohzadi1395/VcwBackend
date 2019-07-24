@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Application.Interfaces.Challenge;
 using Application.Interfaces.Filter;
 using Application.Interfaces.FilterStatus;
@@ -11,10 +12,12 @@ using Application.Interfaces.Vcf;
 using Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using Persistence;
 using Persistence.Core;
@@ -39,13 +42,21 @@ namespace VcwBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("RecruiterSystem");
+            var connectionString = Configuration.GetConnectionString("VcwConnection");
             if (string.IsNullOrEmpty(connectionString))
                 throw new InvalidOperationException("The connection string was not set " +
                                                     "in the 'EFCORETOOLSDB' environment variable.");
 
-            services.AddDbContext<Persistence.ApiContext>(context =>
-                context.UseSqlServer(connectionString));
+            //services.AddDbContext<ApiContext>(context =>
+            //    context.UseSqlServer(connectionString));
+
+            services.AddDbContext<ApiContext>(options =>
+                options.UseSqlServer(connectionString,
+                    optionsBuilder =>
+                        optionsBuilder.MigrationsAssembly("VcwBackend")
+                )
+            );
+
 
             services.AddCors(options => options.AddPolicy("Cors", builder =>
             {
@@ -98,6 +109,12 @@ namespace VcwBackend
 
 //            app.UseHttpsRedirection();
             app.UseCors("Cors");
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
             app.UseMvc();
         }
     }
