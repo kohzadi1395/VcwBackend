@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VcwBackend", "VcwBackend\VcwBackend.csproj", "{885970D3-1DA2-4357-B3EC-3AB1730F4B37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{FC5726F8-9B5D-4632-A6EA-BE7F2CBEA68C}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\CPU\Desktop\SQLQuery1.sql = C:\Users\CPU\Desktop\SQLQuery1.sql
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{05132D3B-67BC-480A-B5F1-6BCE8B86B01F}"
 EndProject
